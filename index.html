@@ -1,0 +1,176 @@
+<html>
+    <head>
+        <title>Bitmask Converter</title>
+        <style type="text/css">
+            * {
+            box-sizing: border-box;
+            }
+            .container {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 40px;
+            background-color: #EEE;
+            border-radius: 10px;
+            }
+            .row-buttons {
+            margin: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            }
+            .textinput {
+            font-size: 32px;
+            width: 100%;
+            border-radius: 8px;
+            border: 2px solid #AAA;
+            padding: 13px 16px;
+            outline: none;
+            }
+            .btn {
+            cursor: pointer;
+            outline: none;
+            flex: 0 0 49%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+            color: #FFFFFF; 
+            background-color: #337ab7;   
+            border: 1px solid #2e6da4;
+            border-radius: 8px;
+            }
+            .btn:hover, 
+            .btn:focus, 
+            .btn:active, 
+            .btn.active { 
+            background-color: #286090;
+            }
+            .btn span {
+            margin: 0 0px;
+            font-size: 24px;
+            }
+            .btn i {
+            margin: -0px;
+            }
+            .btn i svg {
+            fill: #FFF;
+            }
+            .btn-unmask {
+            flex-direction: column-reverse;
+            }
+            .btn-unmask i {
+            transform: rotate(0deg);
+            margin-top: -5px;
+            }
+            .btn-unmask span {
+            margin-top: 24px;
+            }
+            .btn-mask {
+            }
+            .btn-mask i {
+            transform: rotate(180deg);
+            margin-bottom: -8px;
+            }
+            .btn-mask span {
+            margin-bottom: 18px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <input type="text" id="TxtBitmask" placeholder="bitmask value" class="textinput">
+            </div>
+            <div class="row row-buttons">
+                <button id="BtnBitmaskToInt" class="btn btn-unmask">
+                    <i class="arrow">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                            <path fill="none" d="M0 0h24v24H0V0z"/>
+                        </svg>
+                    </i>
+                    <span class="btn-text">Unmask</span>
+                </button>
+                <button id="BtnIntToBitmask" class="btn btn-mask">
+                    <i class="arrow">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                            <path fill="none" d="M0 0h24v24H0V0z"/>
+                        </svg>
+                    </i>
+                    <span class="btn-text">Mask</span>
+                </button>
+            </div>
+            <div class="row">
+                <input type="text" id="TxtIntList" placeholder="integer list" class="textinput">
+            </div>
+        </div>
+        <script type="text/javascript">
+            var btnBitmaskToInt = document.getElementById("BtnBitmaskToInt");
+            btnBitmaskToInt.addEventListener("click", btnBitmaskToInt_addevent);
+            
+            var btnIntToBitmask = document.getElementById("BtnIntToBitmask");
+            btnIntToBitmask.addEventListener("click", btnIntToBitmask_addevent);
+            
+            function btnBitmaskToInt_addevent()
+            {
+              var inputValue = document.getElementById("TxtBitmask").value;
+              document.getElementById("TxtIntList").value = BitmaskToInt(inputValue);
+            }
+            
+            function btnIntToBitmask_addevent()
+            {
+              var inputValue = document.getElementById("TxtIntList").value;
+              document.getElementById("TxtBitmask").value = IntToBitmask(inputValue);
+            }
+            
+            function BitmaskToInt(Bitmask)
+            {
+            if(isNaN(Bitmask))
+            {
+              return 'error!';
+            }
+            var quotient = Bitmask;
+              var flagId = 0;
+              var remainder = 0;
+              var output = "";
+              while(quotient > 0)
+              {
+                  remainder = quotient % 2;
+                  quotient = Math.floor(quotient/2);
+                  if(remainder == 1)
+                  {
+                      output = output + flagId + ",";
+                  }
+                  flagId++;
+              }
+              output = output.slice(0, -1);
+              return output;
+            }
+            
+            function IntToBitmask(IntList)
+            {
+            if(IntList=="")  
+              {              
+                return "";
+              }
+            var intArray = IntList.split(",");          
+            var output = 0;
+            
+            for(var item of intArray)            
+              {
+                if(item == '' || isNaN(item))
+                  {
+                    return 'error!';
+                    break;
+                  }
+                else
+                  {
+                    output += 2**item;
+                  }              
+              }
+             return output;
+            }
+        </script>
+    </body>
+</html>
